@@ -23,7 +23,9 @@
     "js",
     "ui"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "rapydscript": "^0.5.58"
+  },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-banner": "^0.1.3",
