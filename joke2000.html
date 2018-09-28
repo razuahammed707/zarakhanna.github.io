@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Epic</title>
+  <title>joke2000</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="build/botui.min.css">
   <link rel="stylesheet" href="build/botui-theme-default.css">
@@ -14,24 +14,28 @@
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="build/botui.js"></script>
   <script src="chatbot_utility.js"></script>
-  <script src="chatbot_logic.js"></script>
   <script>
     //initialize bot
     var botui = new BotUI('trial');
 
     //define chat flow
     function init(user) {
-      var obj = generate_reply_prompt_pair(user);
-      return display_reply(obj.reply)
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'http://127.0.0.1:8000/fb_octa/joke', false);
+      xhr.send();
+      var resp = JSON.parse(xhr.responseText);
+      var reply = create_reply("text", resp.question + " Drumroll! the answer is: "+resp.answer + "Ha haha!!!😋 ");
+      return display_reply(reply)
       .then(function() {
-        if (obj.prompt.type == "null") {return;}
-        return display_prompt(obj.prompt);
+        // CREATE prompt HERE
+        var poopy = create_prompt("text","Enter your text!")
+        return display_prompt(poopy);
       })
       .then(init)
     };
 
     //begin chat
-    init({value: "new conversation"});
+    init(null);
   </script>
 
 </body>
