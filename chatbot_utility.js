@@ -42,7 +42,6 @@ function display_prompt(prompt) {
       });
     case "text":
       return botui.action.text({
-        delay: 1000,
         action: {
           value: '',
           placeholder: prompt.content
