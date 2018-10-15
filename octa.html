@@ -49,7 +49,6 @@
 
         // Listen for sign-in state changes.
         GoogleAuth.isSignedIn.listen(updateSigninStatus);
-        GoogleAuth.isSignedIn.listen(initializeBot);
 
         // Handle initial sign-in state. (Determine if user is already signed in.)
         var user = GoogleAuth.currentUser.get();
@@ -89,6 +88,7 @@
         $('#Octa').css('display', 'block');
         $('#auth-status').html('You are currently signed in and have granted ' +
             'access to this app.');
+        initializeBot(user);
       } else {
         $('#sign-in-or-out-button').html('Sign In/Authorize');
         $('#revoke-access-button').css('display', 'none');
@@ -103,11 +103,10 @@
     }
 
     //initialize bot
-    var botui = new BotUI('Octa');
+    var botui
 
-    function initializeBot(isSignedIn) {
-
-      var user = GoogleAuth.currentUser.get();
+    function initializeBot(user) {
+      botui = = new BotUI('Octa');
       var user_profile = user.getBasicProfile();
       var user_token = user.getAuthResponse().access_token;
       //define chat flow
