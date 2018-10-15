@@ -1,4 +1,4 @@
-var GoogleAuth;
+GoogleAuth;
 var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 function handleClientLoad() {
   // Load the API's client and auth2 modules.
