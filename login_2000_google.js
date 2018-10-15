@@ -60,11 +60,13 @@ function setSigninStatus(isSignedIn) {
   if (isAuthorized) {
     $('#sign-in-or-out-button').html('Sign out');
     $('#revoke-access-button').css('display', 'inline-block');
+    $('#Octa').css('display', 'block');
     $('#auth-status').html('You are currently signed in and have granted ' +
         'access to this app.');
   } else {
     $('#sign-in-or-out-button').html('Sign In/Authorize');
     $('#revoke-access-button').css('display', 'none');
+    $('#Octa').css('display', 'none');
     $('#auth-status').html('You have not authorized this app or you are ' +
         'signed out.');
   }
