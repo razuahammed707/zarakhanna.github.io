@@ -21,7 +21,6 @@
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="build/botui.js"></script>
   <script src="chatbot_utility.js"></script>
-  <script src="login_2000_google.js"></script>
   <script>
 
     var GoogleAuth;
@@ -105,7 +104,7 @@
 
 
 
-    function initializeBot() {
+    function initializeBot(isSignedIn) {
       //initialize bot
       var botui = new BotUI('Octa');
       var user = GoogleAuth.currentUser.get();
@@ -142,9 +141,9 @@
           xhr.send(JSON.stringify(params));
         })
       };
+      //begin chat
+      init({type: null, value: null});
     }
-    //begin chat
-    init({type: null, value: null});
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script async defer src="https://apis.google.com/js/api.js"
