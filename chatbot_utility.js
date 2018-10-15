@@ -12,19 +12,21 @@ function create_prompt(my_type, my_content) {
           content: my_content}
 }
 
-function display_reply(reply) {
+function display_reply(reply, index) {
   switch (reply.type) {
     case "text":
-      return botui.message.bot({
-        delay: 300,
+      return botui.message.update(index, {
+        loading: false,
+        delay: 0,
         content: reply.content
       });
       break;
     case "image":
       //TODO
     default:
-      return botui.message.bot({
-        delay: 300,
+      return botui.message.update(index, {
+        loading: false,
+        delay: 0,
         content: "Unhandled type: " + reply.type
       });
   }
@@ -38,10 +40,12 @@ function display_prompt(prompt) {
         buttons.push({text: prompt.content[i],value: prompt.content[i]})
       }
       return botui.action.button({
+        delay: 50,
         action: buttons
       });
     case "text":
       return botui.action.text({
+        delay: 50,
         action: {
           value: '',
           placeholder: prompt.content
@@ -49,7 +53,7 @@ function display_prompt(prompt) {
       });
     default:
       return botui.message.bot({
-        delay: 300,
+        delay: 50,
         content: "Unhandled type: " + prompt.type
       });
   }

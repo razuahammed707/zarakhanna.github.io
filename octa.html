@@ -8,35 +8,52 @@
   <link rel="stylesheet" href="build/botui-theme-default.css">
 </head>
 <body>
+
+  <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr>
+
   <div class="botui-app-container" id="Octa">
     <bot-ui></bot-ui>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="build/botui.js"></script>
   <script src="chatbot_utility.js"></script>
+  <script src="login_2000_google.js"></script>
   <script>
     //initialize bot
     var botui = new BotUI('Octa');
 
     //define chat flow
     function init(user) {
-      var params = {message: user.value,
-                    user_info: null};
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://127.0.0.1:8000/chatterbox/', false);
-      xhr.setRequestHeader('Content-type', 'application/json');
-      console.log(JSON.stringify(params));
-      xhr.send(JSON.stringify(params));
-      var poopy = JSON.parse(xhr.responseText);
-      return display_reply(poopy.reply)
-      .then(function() {
-        return display_prompt(poopy.prompt);
+      return botui.message.bot({
+        loading: true
+      }).then(function(index) {
+        var params = {message: user.value,
+                      user_info: null};
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://127.0.0.1:8000/chatterbox/', true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            var poopy = JSON.parse(xhr.responseText);
+            return display_reply(poopy.reply, index)
+            .then(function() {
+              return display_prompt(poopy.prompt);
+            })
+            .then(init)
+          }
+        }
+        xhr.setRequestHeader('Content-type', 'application/json');
+        console.log(JSON.stringify(params));
+        xhr.send(JSON.stringify(params));
       })
-      .then(init)
     };
 
     //begin chat
     init({type: null, value: null});
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js"
+          onload="this.onload=function(){};handleClientLoad()"
+          onreadystatechange="if (this.readyState === 'complete') this.onload()">
   </script>
 </body>
 </html>
