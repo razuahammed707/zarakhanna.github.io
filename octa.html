@@ -102,11 +102,11 @@
       setSigninStatus();
     }
 
-
+    //initialize bot
+    var botui = new BotUI('Octa');
 
     function initializeBot(isSignedIn) {
-      //initialize bot
-      var botui = new BotUI('Octa');
+
       var user = GoogleAuth.currentUser.get();
       var user_profile = user.getBasicProfile();
       var user_token = user.getAuthResponse().access_token;
