@@ -25,14 +25,23 @@
   <script>
     //initialize bot
     var botui = new BotUI('Octa');
-
+    var user = GoogleAuth.currentUser.get();
+    var user_profile = user.getBasicProfile();
+    var user_token = user.getAuthResponse().access_token;
     //define chat flow
-    function init(user) {
+    function init(message) {
       return botui.message.bot({
         loading: true
       }).then(function(index) {
-        var params = {message: user.value,
-                      user_info: null};
+        var params = {message: message.value,
+                      user_info: {first_name: user_profile.getGivenName(),
+                                  last_name: user_profile.getFamilyName(),
+                                  email: user_profile..getEmail(),
+                                  token: user_token},
+                      context: {last_intent: null,
+                                expected_intent: null,
+                                id: null}
+                     };
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://127.0.0.1:8000/chatterbox/', true);
         xhr.onreadystatechange = function() {
