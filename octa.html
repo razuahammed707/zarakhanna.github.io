@@ -110,7 +110,8 @@
 
       //define chat flow
       function init(contract) {
-        console.log(message)
+        console.log("Contract to send");
+        console.log(contract);
         return botui.message.bot({
           loading: true
         }).then(function(index) {
@@ -119,12 +120,14 @@
           xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
               var poopy = JSON.parse(xhr.responseText);
+              console.log("Contract received");
+              console.log(poopy);
               return display_reply(poopy.reply, index)
               .then(function() {
                 return display_prompt(poopy.prompt);
               })
               .then(function(reply) {
-                var contract = {message: reply.value,:
+                var contract = {message: reply.value,
                                 user_info: poopy.user_info}
                 return init(contract)
               })
