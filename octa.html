@@ -107,23 +107,13 @@
 
     function initializeBot(user) {
       botui = new BotUI('Octa');
-      var user_profile = user.getBasicProfile();
-      var user_token = user.getAuthResponse().access_token;
+
       //define chat flow
-      function init(message) {
+      function init(contract) {
         console.log(message)
         return botui.message.bot({
           loading: true
         }).then(function(index) {
-          var params = {message: message.value,
-                        user_info: {first_name: user_profile.getGivenName(),
-                                    last_name: user_profile.getFamilyName(),
-                                    email: user_profile.getEmail(),
-                                    token: user_token},
-                        context: {last_intent: null,
-                                  expected_intent: null,
-                                  id: null}
-                       };
           var xhr = new XMLHttpRequest();
           xhr.open('POST', 'http://127.0.0.1:8000/chatterbox/', true);
           xhr.onreadystatechange = function() {
@@ -133,16 +123,29 @@
               .then(function() {
                 return display_prompt(poopy.prompt);
               })
-              .then(init)
+              .then(function(reply) {
+                var contract = {message: reply.value,:
+                                user_info: poopy.user_info}
+                return init(contract)
+              })
             }
           }
           xhr.setRequestHeader('Content-type', 'application/json');
-          //console.log(JSON.stringify(params));
-          xhr.send(JSON.stringify(params));
+          xhr.send(JSON.stringify(contract));
         })
       };
       //begin chat
-      init({type: null, value: null});
+      var user_profile = user.getBasicProfile();
+      var user_token = user.getAuthResponse().access_token;
+      var user_info = {first_name: user_profile.getGivenName(),
+                       last_name: user_profile.getFamilyName(),
+                       email: user_profile.getEmail(),
+                       token: user_token
+                       last_intent: null,
+                       expected_intent: null,
+                       id: null}
+      init({message: "Hello Octa",
+                      user_info: user_info,});
     }
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
