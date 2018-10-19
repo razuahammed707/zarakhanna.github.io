@@ -18,7 +18,7 @@ function display_reply(reply, index) {
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: reply.content
+        content: reply.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
       });
       break;
     case "image":
