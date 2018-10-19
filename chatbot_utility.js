@@ -18,7 +18,7 @@ function display_reply(reply, index) {
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: reply.content;
+        content: reply.content,
       });
       break;
     case "image":
@@ -27,7 +27,7 @@ function display_reply(reply, index) {
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: "Unhandled type: " + reply.type
+        content: "Unhandled type: " + reply.type,
       });
   }
 }
