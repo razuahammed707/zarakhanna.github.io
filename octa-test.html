@@ -117,7 +117,7 @@
           loading: true
         }).then(function(index) {
           var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'https://octa-v1.herokuapp.com/chatterbox/', true);
+          xhr.open('POST', 'http://127.0.0.1:8000/chatterbox/', true);
           xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
               var poopy = JSON.parse(xhr.responseText);
