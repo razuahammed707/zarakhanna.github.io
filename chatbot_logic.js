@@ -11,7 +11,7 @@ function generate_reply_prompt_pair(user){
   */
 
   if (text_lower == "new conversation") {
-    return {reply: create_reply("text", "Greetings human😎! I am a Martian, mr. å¥πø (Ay-yp-pi-oslash) 👽 and my team and I are trying to decide if we should give you this scientifically-designed explosion-worthy-cake🎂, or EAT YOU FOR MY DINNER🍽😲! Roast head is a favorate of ours! If you want the cake, you must answer these questions correctly. One wrong move, and we will consider roasting you for dinner. Do you agree?"),
+    return {reply: create_reply("text", "Greetings human😎! I am a Martian, mr. å¥πø (Ay-yp-pi-oslash) 👽 and my team and I are trying to decide if we should give you this scientifically-designed explosion-worthy-cake🎂, ![cake](https://techflourish.com/images/birthday-cake-gif-clipart.gif) or EAT YOU FOR MY DINNER🍽😲! Roast head is a favorate of ours! If you want the cake, you must answer these questions correctly. One wrong move, and we will consider roasting you for dinner. Do you agree?"),
             prompt: create_prompt("button", ["Bah, dumbo, OK.","URGH!!! Fine."])}
 
   } else if (contains("Bah, dumbo, OK", text) || contains("URGH!!! Fine.", text)) {
@@ -23,7 +23,7 @@ function generate_reply_prompt_pair(user){
             prompt: create_prompt("button", ["R2Detour!","A bus!"])}
 
   } else if (contains("R2", text) || contains("egg", text))  {
-    return {reply: create_reply("text", "Did I mention that - no, I kept it a seceret! That was the hardest of them all! You earned your cake - and roast chicken is just as good. Ωˆ˜˜ˆå, fech the - hmmm, ah! - the superjump sause. Tonight we go to MARZ!!!"),
+    return {reply: create_reply("text", "Did I mention that - no, I kept it a seceret! That was the hardest of them all! You earned your cake - and roast chicken is just as good. Ωˆ˜˜ˆå, fech the - hmmm, ah! - the superjump sause. Tonight we go to MARS!!! ![mars](http://bestanimations.com/Earth&Space/Planets/mars-planet-animation-4.gif)"),
             prompt: create_prompt("button", ["Bye!","Bye!"])}
 
   } else if (contains("FINE. UNDER PROTEST.", text)) {
@@ -31,11 +31,11 @@ function generate_reply_prompt_pair(user){
             prompt: create_prompt("button", ["A fork in yolk","Scrambled eggs!"])}
 
   } else if (contains("fork", text) || contains("bus", text))  {
-    return {reply: create_reply("text", "Bom bom bom! Wrong! Sorry! Hand on a sec, martion call - Hello...Oh!...OK...WHAT?!...Fine...Bye, å¬¬ˆå. I just found out - it's your birthday. Go on eat. Allia, or å¬¬ˆå, ruined my spare head suply and geve them back to humans, so chiken is fine. Toodles!!"),
+    return {reply: create_reply("text", "Bom bom bom! Wrong! Sorry! Hand on a sec, martion call - Hello...Oh!...OK...WHAT?!...Fine...Bye, å¬¬ˆå. I just found out - it's your birthday. Go on eat. Allia, or å¬¬ˆå, ruined my spare head suply and geve them back to humans, so chicken is fine. Toodles!! ![lol](https://thumbs.gfycat.com/ViciousTerribleIberianmidwifetoad-size_restricted.gif)"),
             prompt: create_prompt("button", ["Bye!!!","Toodles!"])}
 
   } else if (contains("bye", text_lower) || contains("toodles", text_lower))  {
-    return {reply: create_reply("text", "I said, bye! Start the engines, Ωˆ˜˜ˆå!"),
+    return {reply: create_reply("text", "I said, bye! Start the engines, åµåΩ´å©ˆ®¬(amazagirl)! ![bye](https://thumbs.gfycat.com/BitesizedTerribleCanine-small.gif)"),
             prompt: create_prompt("null", null)}
   }
 

@@ -153,7 +153,7 @@
     		},
         handle_action_select: function () {
           if(this.action.select.searchselect && !this.action.select.multipleselect) {
-            if(!this.action.select.value.value) return; 
+            if(!this.action.select.value.value) return;
             _handleAction(this.action.select.value[this.action.select.label]);
             _actionResolve({
               type: 'text',
@@ -161,9 +161,9 @@
               text: this.action.select.value.text,
               obj: this.action.select.value
             });
-          } 
+          }
           if(this.action.select.searchselect && this.action.select.multipleselect) {
-            if(!this.action.select.value) return; 
+            if(!this.action.select.value) return;
             var values = new Array();
             var labels = new Array();
             for (var i = 0; i < this.action.select.value.length; i++) {
@@ -179,7 +179,7 @@
             });
           }
           else {
-            if(!this.action.select.value) return; 
+            if(!this.action.select.value) return;
             for (var i = 0; i < this.action.select.options.length; i++) { // Find select title
               if (this.action.select.options[i].value == this.action.select.value) {
                 _handleAction(this.action.select.options[i].text);
@@ -196,8 +196,9 @@
     };
 
     root.Vue.directive('botui-markdown', function (el, binding) {
-      if(binding.value == 'false') return; // v-botui-markdown="false"
+      if(binding.value == 'false' || el.getAttribute('botui-markdown-done')) return; // v-botui-markdown="false"
       el.innerHTML = _parseMarkDown(el.textContent);
+      el.setAttribute('botui-markdown-done', true); // mark the node as already parsed
     });
 
     root.Vue.directive('botui-scroll', {
@@ -385,7 +386,7 @@
         _instance.action.button.buttons = _opts.actionButton;
         _instance.action.text = _opts.actionText;
         return _showActions(_opts);
-      }      
+      }
     };
 
     if(_options.fontawesome) {
@@ -394,7 +395,7 @@
 
     if(_options.searchselect) {
       loadScript(_searchselect, function() {
-        Vue.component('v-select', VueSelect.VueSelect);      
+        Vue.component('v-select', VueSelect.VueSelect);
       });
     }
 

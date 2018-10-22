@@ -18,16 +18,21 @@
   <script>
     //initialize bot
     var botui = new BotUI('trial');
-
     //define chat flow
     function init(user) {
-      var obj = generate_reply_prompt_pair(user);
-      return display_reply(obj.reply)
-      .then(function() {
-        if (obj.prompt.type == "null") {return;}
-        return display_prompt(obj.prompt);
+      if (!user) {return};
+      console.log(user);
+      return botui.message.bot({
+        loading: true
+      }).then(function(index) {
+        var obj = generate_reply_prompt_pair(user);
+        return display_reply(obj.reply, index)
+        .then(function() {
+          if (obj.prompt.type == "null") {return;}
+          return display_prompt(obj.prompt);
+        })
+        .then(init)
       })
-      .then(init)
     };
 
     //begin chat
