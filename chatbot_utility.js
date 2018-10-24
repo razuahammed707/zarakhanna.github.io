@@ -21,8 +21,13 @@ function display_reply(reply, index) {
         content: reply.content,
       });
       break;
-    case "image":
-      //TODO
+    case "card":
+      return botui.message.update(index, {
+        loading: false,
+        delay: 0,
+        content: '![image]('+reply.image+') ' + reply.content,
+      });
+      break;
     default:
       return botui.message.update(index, {
         loading: false,
