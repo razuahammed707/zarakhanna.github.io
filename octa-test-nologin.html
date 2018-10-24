@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Octa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="build/botui.min.css">
+  <link rel="stylesheet" href="build/botui-theme-default.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+
+  <button id="sign-in-or-out-button"
+          style="margin-left: 25px">Sign In/Authorize</button>
+  <button id="revoke-access-button"
+          style="display: none; margin-left: 25px">Revoke access</button>
+  <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr>
+
+  <div class="botui-app-container" id="Octa">
+    <bot-ui></bot-ui>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="build/botui.js"></script>
+  <script src="chatbot_utility.js"></script>
+  <script>
+    //initialize bot
+    var botui
+
+    function initializeBot(user) {
+      botui = new BotUI('Octa');
+
+      //define chat flow
+      function init(contract) {
+        console.log("Contract to send");
+        console.log(contract);
+        return botui.message.bot({
+          loading: true
+        }).then(function(index) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'http://127.0.0.1:8000/chatterbox/', true);
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              var poopy = JSON.parse(xhr.responseText);
+              console.log("Contract received");
+              console.log(poopy);
+              return display_reply(poopy.reply, index)
+              .then(function() {
+                return display_prompt(poopy.prompt);
+              })
+              .then(function(reply) {
+                var contract = {message: reply.value,
+                                user_info: poopy.user_info}
+                return init(contract)
+              })
+            }
+          }
+          xhr.setRequestHeader('Content-type', 'application/json');
+          xhr.send(JSON.stringify(contract));
+        })
+      };
+      //begin chat
+      var user_info = {first_name: "FirstName",
+                       last_name: "LastName",
+                       email: "example@example.com",
+                       token: null,
+                       last_intent: null,
+                       expected_intent: null,
+                       id: null,}
+      init({message: "Hello Octa",
+                      user_info: user_info,});
+    }
+    initializeBot(null);
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js"
+          onload="this.onload=function(){};handleClientLoad()"
+          onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+</body>
+</html>

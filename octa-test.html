@@ -6,16 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="build/botui.min.css">
   <link rel="stylesheet" href="build/botui-theme-default.css">
+  <link rel="stylesheet" href="build/login-cover.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-
-  <button id="sign-in-or-out-button"
-          style="margin-left: 25px">Sign In/Authorize</button>
-  <button id="revoke-access-button"
-          style="display: none; margin-left: 25px">Revoke access</button>
-  <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr>
+  <div id="login-cover">
+    <div id="login-container">
+      <div>
+        <button id="sign-in-or-out-button"></button>
+        <button id="revoke-access-button"
+                style="display: none; margin-left: 25px">Revoke access</button>
+        <div id="auth-status" style="display: inline; padding-left: 25px"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="botui-app-container" id="Octa">
     <bot-ui></bot-ui>
@@ -90,6 +95,7 @@
         $('#Octa').css('display', 'block');
         $('#auth-status').html('You are currently signed in and have granted ' +
             'access to this app.');
+        $('#login-cover').css('display', 'none');
         initializeBot(user);
       } else {
         $('#sign-in-or-out-button').html('Sign In/Authorize');
