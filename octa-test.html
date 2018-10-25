@@ -14,16 +14,17 @@
   <div id="login-cover">
     <div id="login-container">
       <div>
-        <button id="sign-in-or-out-button"></button>
-        <button id="revoke-access-button"
-                style="display: none; margin-left: 25px">Revoke access</button>
-        <div id="auth-status" style="display: inline; padding-left: 25px"></div>
+        <button id="google-button"></button>
+        <button id="fb-button"></button>
       </div>
     </div>
   </div>
 
-  <div class="botui-app-container" id="Octa">
-    <bot-ui></bot-ui>
+  <div>
+    <div class="botui-app-container" id="Octa">
+      <bot-ui></bot-ui>
+    </div>
+    <button id="sign-out-button" style="display: none; margin-left: 25px">Sign Out</button>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="build/botui.js"></script>
@@ -63,7 +64,10 @@
 
         // Call handleAuthClick function when user clicks on
         //      "Sign In/Authorize" button.
-        $('#sign-in-or-out-button').click(function() {
+        $('#google-button').click(function() {
+          handleAuthClick();
+        });
+        $('#sign-out-button').click(function() {
           handleAuthClick();
         });
         $('#revoke-access-button').click(function() {
@@ -90,19 +94,12 @@
       var user = GoogleAuth.currentUser.get();
       var isAuthorized = user.hasGrantedScopes(SCOPE);
       if (isAuthorized) {
-        $('#sign-in-or-out-button').html('Sign out');
-        $('#revoke-access-button').css('display', 'inline-block');
-        $('#Octa').css('display', 'block');
-        $('#auth-status').html('You are currently signed in and have granted ' +
-            'access to this app.');
         $('#login-cover').css('display', 'none');
+        $('#Octa').css('display', 'block');
         initializeBot(user);
       } else {
-        $('#sign-in-or-out-button').html('Sign In/Authorize');
-        $('#revoke-access-button').css('display', 'none');
+        $('#login-cover').css('display', 'block');
         $('#Octa').css('display', 'none');
-        $('#auth-status').html('You have not authorized this app or you are ' +
-            'signed out.');
       }
     }
 
