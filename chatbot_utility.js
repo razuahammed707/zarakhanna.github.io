@@ -45,6 +45,7 @@ function display_prompt(prompt) {
         buttons.push({text: prompt.content[i],value: prompt.content[i]})
       }
       return botui.action.button({
+        autoHide: false,
         delay: 50,
         action: buttons
       });

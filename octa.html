@@ -62,7 +62,10 @@
 
         // Call handleAuthClick function when user clicks on
         //      "Sign In/Authorize" button.
-        $('#sign-in-or-out-button').click(function() {
+        $('#google-button').click(function() {
+          handleAuthClick();
+        });
+        $('#sign-out-button').click(function() {
           handleAuthClick();
         });
         $('#revoke-access-button').click(function() {
@@ -89,18 +92,12 @@
       var user = GoogleAuth.currentUser.get();
       var isAuthorized = user.hasGrantedScopes(SCOPE);
       if (isAuthorized) {
-        $('#sign-in-or-out-button').html('Sign out');
-        $('#revoke-access-button').css('display', 'inline-block');
+        $('#button-container').css('display', 'none');
         $('#Octa').css('display', 'block');
-        $('#auth-status').html('You are currently signed in and have granted ' +
-            'access to this app.');
         initializeBot(user);
       } else {
-        $('#sign-in-or-out-button').html('Sign In/Authorize');
-        $('#revoke-access-button').css('display', 'none');
+        $('#button-container').css('display', 'block');
         $('#Octa').css('display', 'none');
-        $('#auth-status').html('You have not authorized this app or you are ' +
-            'signed out.');
       }
     }
 
@@ -122,7 +119,7 @@
           loading: true
         }).then(function(index) {
           var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'https://octa-v1.herokuapp.com/chatterbox/', true);
+          xhr.open('POST', 'https://octa-v1.herokuapp.com/chatterbox/chatterbox/', true);
           xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
               var poopy = JSON.parse(xhr.responseText);
