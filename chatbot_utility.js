@@ -18,14 +18,14 @@ function display_reply(reply, index) {
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: reply.content,
+        content: reply.content + "\n![test][test]",
       });
       break;
     case "card":
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: '![image]('+reply.image+') ' + reply.content,
+        content: '![image]('+reply.image+')' + reply.content,
       });
       break;
     default:

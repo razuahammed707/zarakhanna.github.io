@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Octa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="build/botui.min.css">
+  <link rel="stylesheet" href="build/botui-theme-default.css">
+  <link rel="stylesheet" href="build/login-cover.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+  <div id="cover">
+    <div id="alpha-container">
+      <div id="button-container">
+        <button id="google-button"></button>
+        <button id="fb-button"></button>
+      </div>
+      <div class="botui-app-container" id="Octa">
+        <bot-ui></bot-ui>
+        <button id="sign-out-button">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="build/botui.js"></script>
+  <script src="chatbot_utility.js"></script>
+  <script>
+    function setSigninStatus(isSignedIn) {
+      document.getElementById('button-container').style.display = 'none'
+      document.getElementById('Octa').style.display = 'block'
+    }
+
+    //initialize bot
+    var botui
+
+    function postToServerDisplayReply(address, contract) {
+      return botui.message.bot({
+        loading: true
+      }).then(function(index) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', address, true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            var poopy = JSON.parse(xhr.responseText);
+            console.log("Contract received");
+            console.log(poopy);
+            return display_reply(poopy.reply, index)
+          }
+        }
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(JSON.stringify(contract));
+      })
+    }
+
+    function initializeBot(user) {
+      botui = new BotUI('Octa', (payload) => {
+        botui.message.human(payload)
+        console.log("test")
+        postToServerDisplayReply(payload)
+        console.log("test2")
+      });
+      botui.action.text({
+        delay: 50,
+        action: {
+          value: '',
+          placeholder: "type"
+        }
+      })
+      //define chat flow
+      function init(contract) {
+        console.log("Contract to send");
+        console.log(contract);
+        return postToServerDisplayReply("http://127.0.0.1:8000/chatterbox/",contract)
+      };
+      //begin chat
+      var user_info = {first_name: "Jane",
+                       last_name: "Doe",
+                       email: "example@example.com",
+                       token: null,
+                       last_intent: null,
+                       expected_intent: null,
+                       id: null,}
+      init({message: "Hello Octa",
+                      user_info: user_info,});
+    }
+    setSigninStatus()
+    initializeBot()
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js"
+          onload="this.onload=function(){};handleClientLoad()"
+          onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+</body>
+</html>

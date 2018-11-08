@@ -19,7 +19,7 @@
 }(typeof window !== 'undefined' ? window : this, function (root, undefined) {
   "use strict";
 
-  var BotUI = (function (id, opts) {
+  var BotUI = (function (id, callback, opts) {
 
     opts = opts || {};
 
@@ -46,10 +46,11 @@
     _actionResolve,
     _markDownRegex = {
       icon: /!\(([^\)]+)\)/igm, // !(icon)
-      image: /!\[(.*?)\]\((.*?)\)/igm, // ![aleternate text](src)
+      image: /!\[(.*?)\]\((.*?)\)/igm, // ![alternate text](src)
       link: /\[([^\[]+)\]\(([^\)]+)\)(\^?)/igm, // [text](link) ^ can be added at end to set the target as 'blank'
       bold: /\*([^*]+)\*/igm, // *bold* normal *bold*
       italic: /\_([^*]+)\_/igm, // _italic_ normal _italic_
+      button: /!\[(.*?)\]\[(.*?)\]/igm, //![displayed text][additionalpay load]
     },
     _fontAwesome = 'https://use.fontawesome.com/ea731dcb6f.js',
     _esPromisePollyfill = 'https://cdn.jsdelivr.net/es6-promise/4.1.0/es6-promise.min.js', // mostly for IE
@@ -79,7 +80,8 @@
                  .replace(_markDownRegex.icon, "<i class='botui-icon botui-message-content-icon fa fa-$1'></i>")
                  .replace(_markDownRegex.link, _linkReplacer)
                  .replace(_markDownRegex.italic, "<i>$1</i>")
-                 .replace(_markDownRegex.bold, "<b>$1</b>");
+                 .replace(_markDownRegex.bold, "<b>$1</b>")
+                 .replace(_markDownRegex.button, "<button onclick='botui.message.activateCallback(\"$1\")' class='botui-actions-buttons-button'>$1</button>");
     }
 
     function loadScript(src, cb) {
@@ -294,6 +296,12 @@
       removeAll: function () {
         _instance.messages.splice(0, _instance.messages.length);
         return Promise.resolve();
+      },
+      activateCallback: function (content, payload) {
+        if (callback) {
+          callback(content, payload)
+        }
+        //instance.message.add(content)
       }
     };
 
