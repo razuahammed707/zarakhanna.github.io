@@ -6,20 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="build/botui.min.css">
   <link rel="stylesheet" href="build/botui-theme-default.css">
+  <link rel="stylesheet" href="build/login-cover.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-
-  <button id="sign-in-or-out-button"
-          style="margin-left: 25px">Sign In/Authorize</button>
-  <button id="revoke-access-button"
-          style="display: none; margin-left: 25px">Revoke access</button>
-  <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr>
-
-  <div class="botui-app-container" id="Octa">
-    <bot-ui></bot-ui>
+  <div id="cover">
+    <div id="alpha-container">
+      <div id="button-container">
+        <button id="google-button"></button>
+        <button id="fb-button"></button>
+      </div>
+      <div class="botui-app-container" id="Octa">
+        <bot-ui></bot-ui>
+        <button id="sign-out-button">Sign Out</button>
+      </div>
+    </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="build/botui.js"></script>
   <script src="chatbot_utility.js"></script>
@@ -58,7 +62,10 @@
 
         // Call handleAuthClick function when user clicks on
         //      "Sign In/Authorize" button.
-        $('#sign-in-or-out-button').click(function() {
+        $('#google-button').click(function() {
+          handleAuthClick();
+        });
+        $('#sign-out-button').click(function() {
           handleAuthClick();
         });
         $('#revoke-access-button').click(function() {
@@ -85,18 +92,12 @@
       var user = GoogleAuth.currentUser.get();
       var isAuthorized = user.hasGrantedScopes(SCOPE);
       if (isAuthorized) {
-        $('#sign-in-or-out-button').html('Sign out');
-        $('#revoke-access-button').css('display', 'inline-block');
+        $('#button-container').css('display', 'none');
         $('#Octa').css('display', 'block');
-        $('#auth-status').html('You are currently signed in and have granted ' +
-            'access to this app.');
         initializeBot(user);
       } else {
-        $('#sign-in-or-out-button').html('Sign In/Authorize');
-        $('#revoke-access-button').css('display', 'none');
+        $('#button-container').css('display', 'block');
         $('#Octa').css('display', 'none');
-        $('#auth-status').html('You have not authorized this app or you are ' +
-            'signed out.');
       }
     }
 
@@ -118,7 +119,7 @@
           loading: true
         }).then(function(index) {
           var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'https://octa-v1.herokuapp.com/chatterbox/', true);
+          xhr.open('POST', 'https://octa-v1.herokuapp.com/chatterbox/chatterbox/', true);
           xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
               var poopy = JSON.parse(xhr.responseText);

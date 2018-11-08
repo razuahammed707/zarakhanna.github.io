@@ -47,7 +47,9 @@
     _markDownRegex = {
       icon: /!\(([^\)]+)\)/igm, // !(icon)
       image: /!\[(.*?)\]\((.*?)\)/igm, // ![aleternate text](src)
-      link: /\[([^\[]+)\]\(([^\)]+)\)(\^?)/igm // [text](link) ^ can be added at end to set the target as 'blank'
+      link: /\[([^\[]+)\]\(([^\)]+)\)(\^?)/igm, // [text](link) ^ can be added at end to set the target as 'blank'
+      bold: /\*([^*]+)\*/igm, // *bold* normal *bold*
+      italic: /\_([^*]+)\_/igm, // _italic_ normal _italic_
     },
     _fontAwesome = 'https://use.fontawesome.com/ea731dcb6f.js',
     _esPromisePollyfill = 'https://cdn.jsdelivr.net/es6-promise/4.1.0/es6-promise.min.js', // mostly for IE
@@ -75,7 +77,9 @@
       return text
                  .replace(_markDownRegex.image, "<img class='botui-message-content-image' src='$2' alt='$1' />")
                  .replace(_markDownRegex.icon, "<i class='botui-icon botui-message-content-icon fa fa-$1'></i>")
-                 .replace(_markDownRegex.link, _linkReplacer);
+                 .replace(_markDownRegex.link, _linkReplacer)
+                 .replace(_markDownRegex.italic, "<i>$1</i>")
+                 .replace(_markDownRegex.bold, "<b>$1</b>");
     }
 
     function loadScript(src, cb) {
