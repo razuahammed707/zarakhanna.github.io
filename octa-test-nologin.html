@@ -44,10 +44,13 @@
         xhr.open('POST', address, true);
         xhr.onreadystatechange = function() {
           if (xhr.readyState == 4 && xhr.status == 200) {
-            var poopy = JSON.parse(xhr.responseText);
+            var contract = JSON.parse(xhr.responseText);
             console.log("Contract received");
-            console.log(poopy);
-            return display_reply(poopy.reply, index)
+            console.log(contract);
+            console.log(contract.user_info);
+            botui.userInfo.update(contract.user_info)
+            console.log(botui.userInfo.get())
+            return display_reply(contract.reply, index, contract.user_info)
           }
         }
         xhr.setRequestHeader('Content-type', 'application/json');
@@ -56,25 +59,27 @@
     }
 
     function initializeBot(user) {
-      botui = new BotUI('Octa', (payload) => {
-        botui.message.human(payload)
-        console.log("test")
-        postToServerDisplayReply(payload)
-        console.log("test2")
+      botui = new BotUI('Octa', (contract) => {
+        console.log("Contract sending")
+        console.log(contract)
+        contract['user_info'] = contract['user_info']
+        postToServerDisplayReply("http://127.0.0.1:8000/chatterbox/",contract)
       });
-      botui.action.text({
-        delay: 50,
-        action: {
-          value: '',
-          placeholder: "type"
-        }
-      })
+
       //define chat flow
       function init(contract) {
-        console.log("Contract to send");
-        console.log(contract);
         return postToServerDisplayReply("http://127.0.0.1:8000/chatterbox/",contract)
       };
+
+      function permanentTextInput() {
+        return botui.action.text({
+          delay: 50,
+          action: {
+            value: '',
+            placeholder: "Chat to me!"
+          }
+        }).then(permanentTextInput)
+      }
       //begin chat
       var user_info = {first_name: "Jane",
                        last_name: "Doe",
@@ -85,6 +90,7 @@
                        id: null,}
       init({message: "Hello Octa",
                       user_info: user_info,});
+      permanentTextInput()
     }
     setSigninStatus()
     initializeBot()

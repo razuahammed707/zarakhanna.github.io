@@ -22,10 +22,20 @@ function display_reply(reply, index, user_info) {
       });
       break;
     case "card":
+      var content = reply.content
+      if (reply.image) {
+        content = `![image](${reply.image})\n` + content
+      }
+      if (reply.buttons) {
+        content += '\n'
+        reply.buttons.map(button => {
+          content += `![${button}][${button}]`
+        })
+      }
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: '![image]('+reply.image+')' + reply.content,
+        content: content,
       });
       break;
     default:

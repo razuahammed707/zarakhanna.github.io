@@ -43,6 +43,7 @@
     },
     _container, // the outermost Element. Needed to scroll to bottom, for now.
     _interface = {}, // methods returned by a BotUI() instance.
+    _userInfo = {}, // userInfo
     _actionResolve,
     _markDownRegex = {
       icon: /!\(([^\)]+)\)/igm, // !(icon)
@@ -81,7 +82,7 @@
                  .replace(_markDownRegex.link, _linkReplacer)
                  .replace(_markDownRegex.italic, "<i>$1</i>")
                  .replace(_markDownRegex.bold, "<b>$1</b>")
-                 .replace(_markDownRegex.button, "<button onclick='botui.message.activateCallback(\"$1\")' class='botui-actions-buttons-button'>$1</button>");
+                 .replace(_markDownRegex.button, "<button onclick='botui.message.human(\"$1\")' class='botui-actions-buttons-button'>$1</button>");
     }
 
     function loadScript(src, cb) {
@@ -243,6 +244,12 @@
       _msg.visible = (_msg.delay || _msg.loading) ? false : true;
       var _index = _instance.messages.push(_msg) - 1;
 
+      if (_msg.human && callback) {
+        var contract = {message: _msg.content,
+                        user_info: _userInfo}
+        callback(contract)
+      }
+
       return new Promise(function (resolve, reject) {
         setTimeout(function () {
           if(_msg.delay) {
@@ -297,12 +304,6 @@
         _instance.messages.splice(0, _instance.messages.length);
         return Promise.resolve();
       },
-      activateCallback: function (content, payload) {
-        if (callback) {
-          callback(content, payload)
-        }
-        //instance.message.add(content)
-      }
     };
 
     function mergeAtoB(objA, objB) {
@@ -413,6 +414,15 @@
 
     if(_options.debug) {
       _interface._botApp = _botApp; // current Vue instance
+    }
+
+    _interface.userInfo = {
+      update: function (userInfo) {
+        _userInfo = userInfo
+      },
+      get: function () {
+        return _userInfo
+      }
     }
 
     return _interface;
