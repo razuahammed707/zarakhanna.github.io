@@ -12,13 +12,13 @@ function create_prompt(my_type, my_content) {
           content: my_content}
 }
 
-function display_reply(reply, index) {
+function display_reply(reply, index, user_info) {
   switch (reply.type) {
     case "text":
       return botui.message.update(index, {
         loading: false,
         delay: 0,
-        content: reply.content + "\n![test][test]",
+        content: reply.content,
       });
       break;
     case "card":
