@@ -80,8 +80,8 @@
                  .replace(_markDownRegex.image, "<img class='botui-message-content-image' src='$2' alt='$1' />")
                  .replace(_markDownRegex.icon, "<i class='botui-icon botui-message-content-icon fa fa-$1'></i>")
                  .replace(_markDownRegex.link, _linkReplacer)
-                 .replace(_markDownRegex.italic, "<i>$1</i>")
-                 .replace(_markDownRegex.bold, "<b>$1</b>")
+                 .replace(_markDownRegex.italic, "<i>$2</i>")
+                 .replace(_markDownRegex.bold, "<b>$2</b>")
                  .replace(_markDownRegex.button, "<button onclick='botui.message.human(\"$1\")' class='botui-actions-buttons-button'>$1</button>");
     }
 
