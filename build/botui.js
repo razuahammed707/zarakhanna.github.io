@@ -49,8 +49,8 @@
       icon: /!\(([^\)]+)\)/igm, // !(icon)
       image: /!\[(.*?)\]\((.*?)\)/igm, // ![alternate text](src)
       link: /\[([^\[]+)\]\(([^\)]+)\)(\^?)/igm, // [text](link) ^ can be added at end to set the target as 'blank'
-      bold: /^\*(.+?)\*|\s\*(.+?)\*/igm, // *bold* normal *bold*
-      italic: /^\_(.+?)\_|\s\_(.+?)\_/igm, // _italic_ normal _italic_
+      bold: /(^|\s)\*(.+?)\*/igm, // *bold* normal *bold*
+      italic: /(^|\s)\_(.+?)\_/igm, // _italic_ normal _italic_
       button: /!\[(.*?)\]\[(.*?)\]/igm, //![displayed text][additionalpay load]
     },
     _fontAwesome = 'https://use.fontawesome.com/ea731dcb6f.js',
