@@ -30,7 +30,7 @@
   <script>
 
     var GoogleAuth;
-    var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+    var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
     function handleClientLoad() {
       // Load the API's client and auth2 modules.
       // Call the initClient function after the modules load.
@@ -38,16 +38,11 @@
     }
 
     function initClient() {
-      // Retrieve the discovery document for version 3 of Google Drive API.
-      // In practice, your app can retrieve one or more discovery documents.
-      var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
-
       // Initialize the gapi.client object, which app uses to make API requests.
       // Get API key and client ID from API Console.
       // 'scope' field specifies space-delimited list of access scopes.
       gapi.client.init({
           'apiKey': 'AIzaSyArfo9aq3iQZDhvJyH3m_V2ymp5lby7SFQ',
-          'discoveryDocs': [discoveryUrl],
           'clientId': '892125106683-chdnq787p0mag5dhhklp8ac8prf52rhj.apps.googleusercontent.com',
           'scope': SCOPE
       }).then(function () {
