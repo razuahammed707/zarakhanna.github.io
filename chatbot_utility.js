@@ -51,8 +51,8 @@ function display_prompt(prompt) {
   switch (prompt.type) {
     case "button":
       var buttons = [];
-      for (var i=0; i<prompt.content.length; i++) {
-        buttons.push({text: prompt.content[i],value: prompt.content[i]})
+      for (var i=0; i<prompt.content.primary.length; i++) {
+        buttons.push({text: prompt.content.primary[i], value: prompt.content[i]})
       }
       return botui.action.button({
         //autoHide: false,
@@ -74,14 +74,3 @@ function display_prompt(prompt) {
       });
   }
 }
-
-/**
-THIS IS A BLOCK COMMENT
-1. greet
-2. riddles (3 doors, coffee mud, scenic droid, and many more)
-3. is it your birthday? (ask if answer riddle wrongly)
-4. sing happy birthday song (variants of it)
-5. And you may eat the cake (display cake)
-6. remove cake GENTLY!!!! 🎂
-Note: put in 1000000000000000º emojis!!
-*/
