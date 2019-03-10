@@ -54,6 +54,9 @@ function display_prompt(prompt) {
       for (var i=0; i<prompt.content.primary.length; i++) {
         buttons.push({text: prompt.content.primary[i], value: prompt.content.primary[i]})
       }
+      for (var i=0; i<prompt.content.secondary.length; i++) {
+        buttons.push({text: prompt.content.secondary[i], value: prompt.content.secondary[i]})
+      }
       return botui.action.button({
         //autoHide: false,
         delay: 50,
