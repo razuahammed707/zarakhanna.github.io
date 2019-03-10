@@ -52,7 +52,7 @@ function display_prompt(prompt) {
     case "button":
       var buttons = [];
       for (var i=0; i<prompt.content.primary.length; i++) {
-        buttons.push({text: prompt.content.primary[i], value: prompt.content[i]})
+        buttons.push({text: prompt.content.primary[i], value: prompt.content.primary[i]})
       }
       return botui.action.button({
         //autoHide: false,
