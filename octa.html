@@ -15,7 +15,9 @@
 <body>
 
   <div id="cover">
+
     <div id="alpha-container">
+ 
       <div id="button-container">
 
 
@@ -46,9 +48,12 @@
       </div>
 
       <div class="botui-app-container" id="Octa">
+        <div class="top_bar">
+              <img src="images/octa_text.png">
+        </div>
         <bot-ui></bot-ui>
-        <button id="sign-out-button" onclick="googleSignOut()">Sign Out</button>
-        <button id="sign-out-button-fb" onclick="FacebookLogOut()">Sign Out</button>
+        <button id="sign-out-button" onclick="googleSignOut()" class="signout-btn">Sign Out</button>
+        <button id="sign-out-button-fb" onclick="FacebookLogOut()" class="signout-btn">Sign Out</button>
       </div>
     </div>
   </div>
@@ -59,6 +64,10 @@
 
   <!-- facebook widget -->
   <script>
+
+    if(Octa.style.display==="none"){
+
+    }
       //initialize bot
       var botui
 
@@ -211,8 +220,7 @@ function fb_initializeBot(user) {
 
 
     <!-- google login -->
-      <script>
-
+    <script>
     var GoogleAuth;
     var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
     function handleClientLoad() {

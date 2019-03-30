@@ -16,7 +16,7 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
   left: -3px;
   height: 10px;
   width: 10px;
-  background: #87CEFA;
+  background: #fff;
   transform: skewX(-45deg);
   border-bottom:inherit;
   border-right:inherit;
@@ -29,7 +29,7 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
 .botui-message-content.human:after {
   left: -webkit-calc(100% - 5px);
   left: calc(100% - 5px);
-  background: #F0E68C;
+  background:#1f9cf2;
   transform: skewX(45deg);
 }
 .botui-message-content.loading:after {
