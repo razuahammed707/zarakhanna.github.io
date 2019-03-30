@@ -23,6 +23,9 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
   box-shadow:inherit;
   clear:both;
 }
+#sign-out-button-fb{
+  float: right;
+}
 .botui-message-content.human:after {
   left: -webkit-calc(100% - 5px);
   left: calc(100% - 5px);
@@ -32,3 +35,4 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
 .botui-message-content.loading:after {
   display: none;
 }
+
