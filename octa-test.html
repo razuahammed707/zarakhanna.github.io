@@ -17,6 +17,7 @@
         <button id="google-button"></button>
         <button id="fb-button"></button>
       </div>
+
       <div class="botui-app-container" id="Octa">
         <bot-ui></bot-ui>
         <button id="sign-out-button">Sign Out</button>
@@ -89,6 +90,7 @@
       if (isAuthorized) {
         $('#button-container').css('display', 'none');
         $('#Octa').css('display', 'block');
+        console.log(user)
         initializeBot(user);
       } else {
         $('#button-container').css('display', 'block');
@@ -136,6 +138,8 @@
         })
       };
       //begin chat
+      $('#sign-out-button-fb').css('display', 'none');
+
       var user_profile = user.getBasicProfile();
       var user_token = user.getAuthResponse().access_token;
       var user_info = {first_name: user_profile.getGivenName(),
