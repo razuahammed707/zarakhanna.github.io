@@ -32,8 +32,14 @@ html, body {
   display: block;
   height: 80vh;
   background: rgba(255, 255, 255, 0.75);
-
+  background-size: 100%;
 }
+
+.botui-container{
+  background:#fff url("/images/chat_back.png") !important;
+  background-size: 100%;
+}
+
 
 #button-container {
   position: fixed;
@@ -109,16 +115,26 @@ background: #eee;
   background: #3a7493;
 }
 
+.botui-message-content-image{
+  width: 500px;
+  object-fit: cover;
+  height:300px;
+}
+
 @media only screen and (max-width: 600px) {
   #cover,#alpha-container{
     width: 100%;
-
   }
   #cover{
     padding: 0;
   }
   #alpha-container{
     height: 70vh;
+  }
+  .botui-message-content-image{
+    max-width: 300px;
+    height: 300px;
+    object-fit: cover;
   }
 
 }
