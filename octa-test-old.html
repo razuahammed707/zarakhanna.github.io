@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Octa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="build/botui.min.css">
+  <link rel="stylesheet" href="build/botui-theme-default.css">
+  <link rel="stylesheet" href="build/login-cover.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+  <div id="cover">
+    <div id="alpha-container">
+      <div id="button-container">
+        <button id="google-button"></button>
+        <button id="fb-button"></button>
+      </div>
+
+      <div class="botui-app-container" id="Octa">
+        <bot-ui></bot-ui>
+        <button id="sign-out-button">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="build/botui.js"></script>
+  <script src="chatbot_utility.js"></script>
+  <script>
+
+    var GoogleAuth;
+    var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
+    function handleClientLoad() {
+      // Load the API's client and auth2 modules.
+      // Call the initClient function after the modules load.
+      gapi.load('client:auth2', initClient);
+    }
+
+    function initClient() {
+      // Initialize the gapi.client object, which app uses to make API requests.
+      // Get API key and client ID from API Console.
+      // 'scope' field specifies space-delimited list of access scopes.
+      gapi.client.init({
+          'apiKey': 'AIzaSyArfo9aq3iQZDhvJyH3m_V2ymp5lby7SFQ',
+          'clientId': '892125106683-chdnq787p0mag5dhhklp8ac8prf52rhj.apps.googleusercontent.com',
+          'scope': SCOPE
+      }).then(function () {
+        GoogleAuth = gapi.auth2.getAuthInstance();
+
+        // Listen for sign-in state changes.
+        GoogleAuth.isSignedIn.listen(updateSigninStatus);
+
+        // Handle initial sign-in state. (Determine if user is already signed in.)
+        var user = GoogleAuth.currentUser.get();
+        setSigninStatus();
+
+        // Call handleAuthClick function when user clicks on
+        //      "Sign In/Authorize" button.
+        $('#google-button').click(function() {
+          handleAuthClick();
+        });
+        $('#sign-out-button').click(function() {
+          handleAuthClick();
+        });
+        $('#revoke-access-button').click(function() {
+          revokeAccess();
+        });
+      });
+    }
+
+    function handleAuthClick() {
+      if (GoogleAuth.isSignedIn.get()) {
+        // User is authorized and has clicked 'Sign out' button.
+        GoogleAuth.signOut();
+      } else {
+        // User is not signed in. Start Google auth flow.
+        GoogleAuth.signIn();
+      }
+    }
+
+    function revokeAccess() {
+      GoogleAuth.disconnect();
+    }
+
+    function setSigninStatus(isSignedIn) {
+      var user = GoogleAuth.currentUser.get();
+      var isAuthorized = user.hasGrantedScopes(SCOPE);
+      if (isAuthorized) {
+        $('#button-container').css('display', 'none');
+        $('#Octa').css('display', 'block');
+        console.log(user)
+        initializeBot(user);
+      } else {
+        $('#button-container').css('display', 'block');
+        $('#Octa').css('display', 'none');
+      }
+    }
+
+    function updateSigninStatus(isSignedIn) {
+      setSigninStatus();
+    }
+
+    //initialize bot
+    var botui
+
+    function initializeBot(user) {
+      botui = new BotUI('Octa');
+
+      //define chat flow
+      function init(contract) {
+        console.log("Contract to send");
+        console.log(contract);
+        return botui.message.bot({
+          loading: true
+        }).then(function(index) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'https://octa-qa.herokuapp.com/chatterbox/chatterbox/', true);
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              var poopy = JSON.parse(xhr.responseText);
+              console.log("Contract received");
+              console.log(poopy);
+              return display_reply(poopy.reply, index)
+              .then(function() {
+                return display_prompt(poopy.prompt);
+              })
+              .then(function(reply) {
+                var contract = {message: reply.value,
+                                user_info: poopy.user_info}
+                return init(contract)
+              })
+            }
+          }
+          xhr.setRequestHeader('Content-type', 'application/json');
+          xhr.send(JSON.stringify(contract));
+        })
+      };
+      //begin chat
+      $('#sign-out-button-fb').css('display', 'none');
+
+      var user_profile = user.getBasicProfile();
+      var user_token = user.getAuthResponse().access_token;
+      var user_info = {first_name: user_profile.getGivenName(),
+                       last_name: user_profile.getFamilyName(),
+                       email: user_profile.getEmail(),
+                       token: user_token,
+                       last_intent: null,
+                       expected_intent: null,
+                       id: null,}
+      init({message: "Hello Octa",
+                      user_info: user_info,});
+    }
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js"
+          onload="this.onload=function(){};handleClientLoad()"
+          onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+</body>
+</html>

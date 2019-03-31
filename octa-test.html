@@ -9,18 +9,52 @@
   <link rel="stylesheet" href="build/login-cover.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </head>
 <body>
+
   <div id="cover">
+
     <div id="alpha-container">
+ 
       <div id="button-container">
-        <button id="google-button"></button>
-        <button id="fb-button"></button>
+
+
+        <button id="google-button">
+            <div class="button-wrapper">
+
+                <div class="button_images">
+                  <img src="images/google.png">
+                </div>
+                <div class="button_content">
+                    <p>Sign In with google</p>
+                </div>
+            </div>
+        </button>
+
+
+        <button  id="fb-button"scope="public_profile,email,first_name,last_name" onlogin="checkLoginState();">
+            <div class="button-wrapper">
+
+                <div class="button_images">
+                  <img src="images/fb.png">
+                </div>
+                <div class="button_content">
+                    <p>Sign In with facebook</p>
+                </div>
+            </div>
+        <button>
       </div>
 
       <div class="botui-app-container" id="Octa">
+        <div class="top_bar">
+              <img src="images/octa_text.png">
+        </div>
         <bot-ui></bot-ui>
-        <button id="sign-out-button">Sign Out</button>
+        <button id="sign-out-button" onclick="googleSignOut()" class="signout-btn">Sign Out</button>
+        <button id="sign-out-button-fb" onclick="FacebookLogOut()" class="signout-btn">Sign Out</button>
       </div>
     </div>
   </div>
@@ -28,8 +62,166 @@
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="build/botui.js"></script>
   <script src="chatbot_utility.js"></script>
+
+  <!-- facebook widget -->
   <script>
 
+    if(Octa.style.display==="none"){
+
+    }
+      //initialize bot
+      var botui
+
+function fb_initializeBot(user) {
+  botui = new BotUI('Octa');
+
+  //define chat flow
+  function init(contract) {
+    console.log("Contract to send");
+    console.log(contract);
+    return botui.message.bot({
+      loading: true
+    }).then(function(index) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://octa-qa.herokuapp.com/chatterbox/chatterbox/', true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var poopy = JSON.parse(xhr.responseText);
+          console.log("Contract received");
+          console.log(poopy);
+          return display_reply(poopy.reply, index)
+          .then(function() {
+            return display_prompt(poopy.prompt);
+          })
+          .then(function(reply) {
+            var contract = {message: reply.value,
+                            user_info: poopy.user_info}
+            return init(contract)
+          })
+        }
+      }
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.send(JSON.stringify(contract));
+    })
+  };
+  //begin chat
+
+  var response =  user;
+  var user_info = {first_name: response.first_name,
+                   last_name: response.last_name,
+                   email: response.email,
+                   token: response.id,
+                   last_intent: null,
+                   expected_intent: null,
+                   id: null,}
+  init({message: "Hello Octa",
+                  user_info: user_info,});
+  }
+  </script>
+
+  <!-- facebook login  start-->
+  <script>
+      // This is called with the results from from FB.getLoginStatus().
+      function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        // Full docs on the response object can be found in the documentation
+        // for FB.getLoginStatus().
+        if (response.status === 'connected') {
+          // Logged into your app and Facebook.
+          testAPI();
+        } else {
+          // The person is not logged into your app or we are unable to tell.
+          
+        }
+      }
+    
+      // This function is called when someone finishes with the Login
+      // Button.  See the onlogin handler attached to it in the sample
+      // code below.
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+    
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '295723654428696',
+          cookie     : true,  // enable cookies to allow the server to access 
+                              // the session
+          xfbml      : true,  // parse social plugins on this page
+          version    : 'v3.2' // The Graph API version to use for the call
+        });
+    
+        // Now that we've initialized the JavaScript SDK, we call 
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+    
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+    
+      };
+
+      function FacebookLogOut(){
+        FB.getLoginStatus(function(response) {
+          if(response.status==="connected"){
+            FB.logout((res)=>{
+              window.location="/octa.html"
+              return;
+            })
+          }
+        });
+      }
+
+    
+      // Load the SDK asynchronously
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    
+      // Here we run a very simple test of the Graph API after login is
+      // successful.  See statusChangeCallback() for when this call is made.
+      function testAPI() {
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me',{fields:["first_name","last_name","email"]}, function(response) {
+            console.log(response)   
+            fb_initializeBot(response) 
+            $('#Octa').css('display', 'block');
+            $('#sign-out-button').css('display', 'none');
+
+
+
+        });
+      }
+
+      $('#fb-button').on('click', function () {
+                FB.login(function (response) { statusChangeCallback(response); }, { scope: 'email' });
+    });
+      
+    </script>
+    
+
+  <!-- facebook login end -->
+
+
+    <!-- google login -->
+    <script>
     var GoogleAuth;
     var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
     function handleClientLoad() {
@@ -61,13 +253,18 @@
         $('#google-button').click(function() {
           handleAuthClick();
         });
-        $('#sign-out-button').click(function() {
-          handleAuthClick();
-        });
         $('#revoke-access-button').click(function() {
           revokeAccess();
         });
       });
+    }
+
+    function googleSignOut(){
+      var GoogleAuth = gapi.auth2.getAuthInstance();
+      GoogleAuth.signOut().then(()=>{
+        window.location="/octa.html"
+      })
+
     }
 
     function handleAuthClick() {
@@ -90,7 +287,6 @@
       if (isAuthorized) {
         $('#button-container').css('display', 'none');
         $('#Octa').css('display', 'block');
-        console.log(user)
         initializeBot(user);
       } else {
         $('#button-container').css('display', 'block');
@@ -153,7 +349,6 @@
                       user_info: user_info,});
     }
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script async defer src="https://apis.google.com/js/api.js"
           onload="this.onload=function(){};handleClientLoad()"
           onreadystatechange="if (this.readyState === 'complete') this.onload()">
