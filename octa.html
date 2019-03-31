@@ -66,9 +66,6 @@
   <!-- facebook widget -->
   <script>
 
-    if(Octa.style.display==="none"){
-
-    }
       //initialize bot
       var botui
 
@@ -149,25 +146,13 @@ function fb_initializeBot(user) {
     
       window.fbAsyncInit = function() {
         FB.init({
-          appId      : '295723654428696',
+          appId      : '395253337952399',
           cookie     : true,  // enable cookies to allow the server to access 
                               // the session
           xfbml      : true,  // parse social plugins on this page
           version    : 'v3.2' // The Graph API version to use for the call
         });
-    
-        // Now that we've initialized the JavaScript SDK, we call 
-        // FB.getLoginStatus().  This function gets the state of the
-        // person visiting this page and can return one of three states to
-        // the callback you provide.  They can be:
-        //
-        // 1. Logged into your app ('connected')
-        // 2. Logged into Facebook, but not your app ('not_authorized')
-        // 3. Not logged into Facebook and can't tell if they are logged into
-        //    your app or not.
-        //
-        // These three cases are handled in the callback function.
-    
+
         FB.getLoginStatus(function(response) {
           statusChangeCallback(response);
         });
@@ -287,7 +272,14 @@ function fb_initializeBot(user) {
       if (isAuthorized) {
         $('#button-container').css('display', 'none');
         $('#Octa').css('display', 'block');
-        initializeBot(user);
+
+        var user_profile = user.getBasicProfile();
+        var user_token = user.getAuthResponse().access_token;
+        var response={first_name: user_profile.getGivenName(),
+                       last_name: user_profile.getFamilyName(),
+                       email: user_profile.getEmail()
+              }
+        initializeBot(response);
       } else {
         $('#button-container').css('display', 'block');
         $('#Octa').css('display', 'none');
@@ -301,7 +293,7 @@ function fb_initializeBot(user) {
     //initialize bot
     var botui
 
-    function initializeBot(user) {
+    function initializeBot(response) {
       botui = new BotUI('Octa');
 
       //define chat flow
@@ -336,12 +328,11 @@ function fb_initializeBot(user) {
       //begin chat
       $('#sign-out-button-fb').css('display', 'none');
 
-      var user_profile = user.getBasicProfile();
-      var user_token = user.getAuthResponse().access_token;
-      var user_info = {first_name: user_profile.getGivenName(),
-                       last_name: user_profile.getFamilyName(),
-                       email: user_profile.getEmail(),
-                       token: user_token,
+   
+      var user_info = {first_name: response.first_name,
+                       last_name: response.last_name,
+                       email: response.email,
+                       token: response.token,
                        last_intent: null,
                        expected_intent: null,
                        id: null,}
