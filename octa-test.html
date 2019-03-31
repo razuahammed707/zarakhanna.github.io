@@ -176,7 +176,7 @@ function fb_initializeBot(user) {
         FB.getLoginStatus(function(response) {
           if(response.status==="connected"){
             FB.logout((res)=>{
-              window.location="/octa.html"
+              window.location="/octa-test.html"
               return;
             })
           }
@@ -260,7 +260,7 @@ function fb_initializeBot(user) {
     function googleSignOut(){
       var GoogleAuth = gapi.auth2.getAuthInstance();
       GoogleAuth.signOut().then(()=>{
-        window.location="/octa.html"
+        window.location="/octa-test.html"
       })
 
     }
