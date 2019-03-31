@@ -25,6 +25,7 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
 }
 #sign-out-button-fb{
   float: right;
+  margin-top: 30px;
 }
 .botui-message-content.human:after {
   left: -webkit-calc(100% - 5px);
@@ -36,7 +37,4 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
   display: none;
 }
 
-.botui-message-content-image{
-  width: 100%;
-}
 
