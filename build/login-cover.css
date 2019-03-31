@@ -12,26 +12,27 @@ html, body {
   border-radius: 5px;
 }
 
-#cover {
+
+#cover{
   /* background-image: url("../images/splash.jpg"); */
-  background-size: cover;
+  /* background-size: cover;
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100%; */
+  max-width: 600px;
+  box-sizing: border-box;
+  display: block;
+  margin: 0 auto;
+
+
+
 }
 
 #alpha-container {
-  position: fixed;
-  padding: 10px;
-  top: 50%;
-  left: 50%;
+  display: block;
   height: 80vh;
-  width: 600px;
-  max-width: 90vw;
-  max-height: 90vh;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   background: rgba(255, 255, 255, 0.75);
+
 }
 
 #button-container {
@@ -86,21 +87,13 @@ html, body {
 #google-button:hover{
   background: #d5d5d5;
 }
-
+#google-button{
+background: #eee;
+}
 #sign-out-button {
   float: right;
 }
 
-.botui-message-content.text::before{
-  content: "";
-  background:url("/images/octa_avatar.png");
-  width: 32px;
-  height: 32px;
-  position: absolute;
-  bottom: 0;
-  left: -50px;;
-  background-size: 100%;
-}
 .top_bar {
   padding: 13px 22px;
   border: 3px solid #f3f3f3;
@@ -116,8 +109,16 @@ html, body {
   background: #3a7493;
 }
 
-.botui-message-content.human::before{
-  content: "";  
-  background: none;
+@media only screen and (max-width: 600px) {
+  #cover,#alpha-container{
+    width: 100%;
+
+  }
+  #cover{
+    padding: 0;
+  }
+  #alpha-container{
+    height: 70vh;
+  }
 
 }
