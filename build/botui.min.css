@@ -23,7 +23,7 @@ a.botui-message-content-link:focus{outline:thin dotted}a.botui-message-content-l
   box-shadow:inherit;
   clear:both;
 }
-#sign-out-button-fb{
+#sign-out-button-fb,#sign-out-button{
   float: right;
   margin-top: 30px;
 }
