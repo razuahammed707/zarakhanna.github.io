@@ -42,11 +42,14 @@ html, body {
 
 
 #button-container {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.button_content p{
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #button-container button {
