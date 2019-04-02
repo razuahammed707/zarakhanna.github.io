@@ -48,17 +48,29 @@
         <button>
       </div>
 
-      <div class="botui-app-container" id="Octa">
+      <div class="botui-app-container" id="fb_octa">
         <div class="top_bar">
               <img src="images/octa_text.png">
         </div>
-        <div id="Octa_container">
-            <bot-ui></bot-ui>
-        </div>
-
-        <button id="sign-out-button" onclick="googleSignOut()" class="signout-btn">Sign Out</button>
+        <bot-ui></bot-ui>
         <button id="sign-out-button-fb" onclick="FacebookLogOut()" class="signout-btn">Sign Out</button>
       </div>
+
+      <div class="botui-app-container" id="g_octa">
+        <div class="top_bar">
+              <img src="images/octa_text.png">
+        </div>
+        <bot-ui></bot-ui>
+        <button id="sign-out-button" onclick="googleSignOut()" class="signout-btn">Sign Out</button>
+      </div>
+
+
+
+
+
+
+
+
     </div>
   </div>
 
@@ -66,68 +78,7 @@
   <script src="build/botui.js"></script>
   <script src="chatbot_utility.js"></script>
 
-  <!-- facebook widget -->
-  <script>
-
-    function createBotUi(){
-      var botUI = document.createElement('bot-ui');
-      var Octa = document.getElementById("Octa_container");
-      Octa.append(botUI)
-
-    }
-
-
-      //initialize bot
-      var botui
-
-function fb_initializeBot(user) {
-  botui = new BotUI('Octa');
-
-  //define chat flow
-  function init(contract) {
-    console.log("Contract to send");
-    console.log(contract);
-    return botui.message.bot({
-      loading: true
-    }).then(function(index) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'https://octa-qa.herokuapp.com/chatterbox/chatterbox/', true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          var poopy = JSON.parse(xhr.responseText);
-          console.log("Contract received");
-          console.log(poopy);
-          return display_reply(poopy.reply, index)
-          .then(function() {
-            return display_prompt(poopy.prompt);
-          })
-          .then(function(reply) {
-            var contract = {message: reply.value,
-                            user_info: poopy.user_info}
-            return init(contract)
-          })
-        }
-      }
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.send(JSON.stringify(contract));
-    })
-  };
-  //begin chat
-
-  var response =  user;
-  var user_info = {first_name: response.first_name,
-                   last_name: response.last_name,
-                   email: response.email,
-                   token: response.id,
-                   last_intent: null,
-                   expected_intent: null,
-                   id: null,}
-  init({message: "Hello Octa",
-                  user_info: user_info,});
-  }
-  </script>
-
-
+  
   <!-- facebook login  start-->
   <script>
       // This is called with the results from from FB.getLoginStatus().
@@ -179,28 +130,15 @@ function fb_initializeBot(user) {
     
         FB.getLoginStatus(function(response) {
           statusChangeCallback(response);
-       
         });
     
       };
-      function singInDom(){
-        $('#button-container').hide()
-      }
-      function signOutDom(){
-        $('#Octa_container').empty();
-        createBotUi()
-        $('#button-container').show()
-        $("Octa").removeClass("botui-app-container");
-
-      }
 
       function FacebookLogOut(){
         FB.getLoginStatus(function(response) {
           if(response.status==="connected"){
             FB.logout((res)=>{
-              signOutDom();
-              $('#sign-out-button-fb').css('display', 'none');
-              location.reload("./octa-test.html")
+              window.location="/octa-test.html"
               return;
             })
           }
@@ -224,16 +162,15 @@ function fb_initializeBot(user) {
         FB.api('/me',{fields:["first_name","last_name","email"]}, function(response) {
             console.log(response)   
             fb_initializeBot(response) 
-            $('#Octa').css('display', 'block');
-            $('#sign-out-button').css('display', 'none');
+            $('#fb_octa').css('display', 'block');
         });
       }
 
       $('#fb-button').on('click', function () {
-        FB.login(function (response) { statusChangeCallback(response); }, { scope: 'email' });
-        $('#sign-out-button-fb').css('display', 'block');
-
+                FB.login(function (response) { statusChangeCallback(response); }, { scope: 'email' });
     });
+
+    
       
     </script>
     
@@ -283,12 +220,7 @@ function fb_initializeBot(user) {
     function googleSignOut(){
       var GoogleAuth = gapi.auth2.getAuthInstance();
       GoogleAuth.signOut().then(()=>{
-
-     
-        $('#Octa_container').empty();
-        createBotUi()
-      
-       
+        window.location="/octa-test.html"
       })
 
     }
@@ -313,7 +245,7 @@ function fb_initializeBot(user) {
       if (isAuthorized) {
         $('#button-container').css('display', 'none');
         $('#Octa').css('display', 'block');
-        console.log(user)
+
         var user_profile = user.getBasicProfile();
         var user_token = user.getAuthResponse().access_token;
         var response={first_name: user_profile.getGivenName(),
@@ -335,7 +267,7 @@ function fb_initializeBot(user) {
     var botui
 
     function initializeBot(response) {
-      botui = new BotUI('Octa');
+      botui = new BotUI('g_octa');
 
       //define chat flow
       function init(contract) {
