@@ -103,6 +103,7 @@ html, body {
   float: right;
 }
 
+
 .top_bar {
   padding: 13px 22px;
   border: 3px solid #f3f3f3;
@@ -118,3 +119,26 @@ html, body {
   background: #3a7493;
 }
 
+.botui-message-content-image{
+  width: 500px;
+  object-fit: cover;
+
+}
+
+@media only screen and (max-width: 600px) {
+  #cover,#alpha-container{
+    width: 100%;
+  }
+  #cover{
+    padding: 0;
+  }
+  #alpha-container{
+    height: 70vh;
+  }
+  .botui-message-content-image{
+    max-width: 300px;
+  
+    object-fit: cover;
+  }
+
+}
