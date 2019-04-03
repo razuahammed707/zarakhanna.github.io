@@ -49,10 +49,11 @@
       </div>
 
       <div class="botui-app-container" id="Octa">
-        <div class="top_bar">
-              <img src="images/octa_text.png">
-        </div>
+      
         <div id="Octa_container">
+            <div class="top_bar">
+                <img src="images/octa_text.png">
+          </div>
             <bot-ui></bot-ui>
         </div>
 
@@ -184,7 +185,7 @@ function fb_initializeBot(user) {
     
       };
       function singInDom(){
-        $('#button-container').hide()
+        $('#button-container').hide();
       }
       function signOutDom(){
         $('#Octa_container').empty();
@@ -200,6 +201,7 @@ function fb_initializeBot(user) {
             FB.logout((res)=>{
               signOutDom();
               $('#sign-out-button-fb').css('display', 'none');
+
               location.reload("./octa-test.html")
               return;
             })
@@ -226,6 +228,7 @@ function fb_initializeBot(user) {
             fb_initializeBot(response) 
             $('#Octa').css('display', 'block');
             $('#sign-out-button').css('display', 'none');
+            singInDom()
         });
       }
 
@@ -283,10 +286,7 @@ function fb_initializeBot(user) {
     function googleSignOut(){
       var GoogleAuth = gapi.auth2.getAuthInstance();
       GoogleAuth.signOut().then(()=>{
-
-     
-        $('#Octa_container').empty();
-        createBotUi()
+        signOutDom();
       
        
       })

@@ -98,18 +98,11 @@ html, body {
 }
 #google-button:hover{
   background: #d5d5d5;
-<<<<<<< HEAD
-=======
-}
-#google-button{
-background: #eee;
->>>>>>> razuahammed707-master
 }
 #sign-out-button {
   float: right;
 }
 
-<<<<<<< HEAD
 .botui-message-content.text::before{
   content: "";
   background:url("/images/octa_avatar.png");
@@ -120,8 +113,6 @@ background: #eee;
   left: -50px;;
   background-size: 100%;
 }
-=======
->>>>>>> razuahammed707-master
 .top_bar {
   padding: 13px 22px;
   border: 3px solid #f3f3f3;
@@ -137,32 +128,8 @@ background: #eee;
   background: #3a7493;
 }
 
-<<<<<<< HEAD
 .botui-message-content.human::before{
   content: "";  
   background: none;
-=======
-.botui-message-content-image{
-  width: 500px;
-  object-fit: cover;
-
-}
-
-@media only screen and (max-width: 600px) {
-  #cover,#alpha-container{
-    width: 100%;
-  }
-  #cover{
-    padding: 0;
-  }
-  #alpha-container{
-    height: 70vh;
-  }
-  .botui-message-content-image{
-    max-width: 300px;
-  
-    object-fit: cover;
-  }
->>>>>>> razuahammed707-master
 
 }

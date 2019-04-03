@@ -52,6 +52,7 @@
       bold: /(^|\s)\*{2}(.+?)\*{2}/igm, // *bold* normal *bold*
       italic: /(^|\s)\_(.+?)\_/igm, // _italic_ normal _italic_
       button: /!\[(.*?)\]\[(.*?)\]/igm, //![displayed text][additionalpay load]
+      newline:/\n/igm, // / It will find /n and break the line 
     },
     _fontAwesome = 'https://use.fontawesome.com/ea731dcb6f.js',
     _esPromisePollyfill = 'https://cdn.jsdelivr.net/es6-promise/4.1.0/es6-promise.min.js', // mostly for IE
@@ -72,7 +73,7 @@
 
     function _linkReplacer(match, $1, $2, $3) {
       var _target = $3 ? 'blank' : ''; // check if '^' sign is present with link syntax
-      return "<a class='botui-message-content-link' target='" + _target + "' href='" + $2 +"'>" + $1 + "</a>";
+      return "<a class='botui-message-content-link' target='_blank" + _target + "' href='" + $2 +"'>" + $1 + "</a>";
     }
 
     function _parseMarkDown(text) {
@@ -82,6 +83,7 @@
                  .replace(_markDownRegex.link, _linkReplacer)
                  .replace(_markDownRegex.italic, "$1<i>$2</i>")
                  .replace(_markDownRegex.bold, "$1<b>$2</b>")
+                 .replace(_markDownRegex.newline,"<br>")
                  .replace(_markDownRegex.button, "<button onclick='botui.message.human(\"$1\")' class='botui-actions-buttons-button'>$1</button>");
     }
 
