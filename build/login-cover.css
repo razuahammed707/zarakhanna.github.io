@@ -98,11 +98,18 @@ html, body {
 }
 #google-button:hover{
   background: #d5d5d5;
+<<<<<<< HEAD
+=======
+}
+#google-button{
+background: #eee;
+>>>>>>> ef78a5c7b17dbb2802a9774e46e1ec10455e94ba
 }
 #sign-out-button {
   float: right;
 }
 
+<<<<<<< HEAD
 .botui-message-content.text::before{
   content: "";
   background:url("/images/octa_avatar.png");
@@ -113,6 +120,8 @@ html, body {
   left: -50px;;
   background-size: 100%;
 }
+=======
+>>>>>>> ef78a5c7b17dbb2802a9774e46e1ec10455e94ba
 .top_bar {
   padding: 13px 22px;
   border: 3px solid #f3f3f3;
@@ -128,8 +137,32 @@ html, body {
   background: #3a7493;
 }
 
+<<<<<<< HEAD
 .botui-message-content.human::before{
   content: "";  
   background: none;
+=======
+.botui-message-content-image{
+  width: 500px;
+  object-fit: cover;
+
+}
+
+@media only screen and (max-width: 600px) {
+  #cover,#alpha-container{
+    width: 100%;
+  }
+  #cover{
+    padding: 0;
+  }
+  #alpha-container{
+    height: 70vh;
+  }
+  .botui-message-content-image{
+    max-width: 300px;
+  
+    object-fit: cover;
+  }
+>>>>>>> ef78a5c7b17dbb2802a9774e46e1ec10455e94ba
 
 }
